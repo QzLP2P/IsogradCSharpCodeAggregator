@@ -1,3 +1,6 @@
+# Move to project App
+cd .\MDF.CodeAggregator.App\
+
 # pack
 dotnet pack
 

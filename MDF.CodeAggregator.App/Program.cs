@@ -205,6 +205,8 @@ namespace MDF.CodeAggregator.App
 
             public override void VisitInvocationExpression(InvocationExpressionSyntax node)
             {
+                Console.WriteLine($"\t ->Visiting invocation expression: {node}");
+
                 var symbol = _semanticModel.GetSymbolInfo(node).Symbol;
                 if (symbol != null)
                 {
@@ -215,9 +217,18 @@ namespace MDF.CodeAggregator.App
 
             public override void VisitObjectCreationExpression(ObjectCreationExpressionSyntax node)
             {
-                var symbol = _semanticModel.GetSymbolInfo(node).Symbol;
-                if (symbol != null)
+                Console.WriteLine($"\t ->Visiting object creation expression: {node}");
+                var symbolInfo = _semanticModel.GetSymbolInfo(node);
+                var symbol = symbolInfo.Symbol ?? symbolInfo.CandidateSymbols.FirstOrDefault();
+
+                if (symbol == null)
                 {
+                    Console.Error.WriteLine($"\t\t -> Unable to resolve symbol for object creation at {node.GetLocation().GetLineSpan().StartLinePosition}");
+                    Console.Error.WriteLine($"\t\t -> Candidate symbols: {string.Join(", ", symbolInfo.CandidateSymbols.Select(s => s.ToString()))}");
+                }
+                else
+                {
+                    Console.WriteLine($"\t\t -> Resolved symbol for object creation: {symbol}");
                     _invokedSymbols.Add(symbol);
                 }
                 base.VisitObjectCreationExpression(node);
@@ -225,6 +236,8 @@ namespace MDF.CodeAggregator.App
 
             public override void VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
             {
+                Console.WriteLine($"\t ->Visiting member access expression: {node}");
+
                 var symbol = _semanticModel.GetSymbolInfo(node).Symbol;
                 if (symbol != null)
                 {
