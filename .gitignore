@@ -1,0 +1,12 @@
+
+MDF.CodeAggregator.App/bin/
+
+MDF.CodeAggregator.App/obj/
+
+MDF.CodeAggregator.App.Tests/bin/
+
+MDF.CodeAggregator.App.Tests/obj/
+
+.vs/
+
+MDF.CodeAggregator.App/nupkg/
